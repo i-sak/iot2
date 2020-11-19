@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCTV_LIST</title>
+
+    <link href="{{  url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h3>CCTV_LIST</h3>
+    </header>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">CCTV</th>
+                </tr>
+                <tr>
+                    <th>일시</th>
+                    <th>얼굴 인식한 이미지</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{row.c_time}}</td>
+                    <td><img style="width:75px; height: 75px;" src="/static/cctv_img/{{row.c_image}}"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <a href="/menuHome" class="menuHomeButton">Home</a>
+</body>
+</html>

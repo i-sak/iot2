@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMP_LIST</title>
+
+    <link href="{{  url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h3>TEMP_LIST</h3>
+    </header>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">TEMPERATURE & HUMIDITY</th>
+                </tr>
+                <tr>
+                    <th>일시</th>
+                    <th>온도</th>
+                    <th>습도</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for row in rows %}
+                <tr>
+                    <td>{{row.t_time}} </td>
+                    <td>{{row.t_temp}} C</td>
+                    <td>{{row.t_humi}} %</td>
+                </tr>
+        {% endfor %}
+            </tbody>    
+        </table>
+    </section>
+    <a href="/menuHome" class="menuHomeButton">Home</a>
+</body>
+</html>

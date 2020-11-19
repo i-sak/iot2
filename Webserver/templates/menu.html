@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iot 관리시스템</title>
+
+  <link href="{{  url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+</head>
+<body>
+    <header>
+      <h3>iot server page (Home)</h3>
+    </header>
+
+    <section class="user_box">
+      <div>
+        <h4>접속IP : {{ _ip}}</h4>
+      </div>
+    </section>
+
+    <section>
+      <a href="/cctv_list"><div class="iot_button">CCTV</div></a>
+      <a href="/gas_list"><div class="iot_button">GAS</div></a>
+      <a href="/temp_list"><div class="iot_button">Temperature</div></a>
+      <a href="/dust_page"><div class="iot_button">Dust</div></a>
+    </section>
+
+    <a href="/menuHome" class="menuHomeButton">Home</a>
+</body>
+</html>
