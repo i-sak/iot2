@@ -1,5 +1,5 @@
-from vo import cctvVo, tempVo, gasVo
-from flask import Flask, render_template, request
+from vo import cctvVo, tempVo, gasVo, controlVo
+from flask import Flask, render_template, request, jsonify
 from mariadb import dbConnection
 from emailService import sendEmail
 import os
@@ -13,8 +13,8 @@ import numpy as np
 
 
 app = Flask(__name__)	# Flask object Assign to app
-
-db = dbConnection.dbConnection(host='192.168.219.111', id='latte', pw='lattepanda', db_name='test')
+#192.168.219.108
+db = dbConnection.dbConnection(host='192.168.219.108', id='latte', pw='lattepanda', db_name='test')
 
 slist = "isaac7263@naver.com, juhea0619@naver.com, itit2014@naver.com, rabbit3919@naver.com"
 
@@ -35,6 +35,8 @@ asyncio.get_event_loop().run_forever()
 cctvVo_list = [] # 임시 cctv 리스트
 tempVo_list = []  # 온습도 리스트
 gasVo_list = [] #  가스 리스트
+
+controlVo_list = [] # control 리스트
 
 def getIp() :
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
@@ -148,6 +150,27 @@ def gas_list() :
         
     return render_template('gas_list.html', rows=gasVo_list)
 
+@app.route("/iotControl", methods=['POST','GET'])
+def iotControl() :
+    # database에서 값 꺼내기
+    dataFrame = db.selectControl()
+    # converting to dict
+    control_dict = dataFrame.to_dict()
+
+    controlVo_list.clear()
+
+    for i in range( len(control_dict['code'] ) ) :
+        obj = controlVo.controlVo(control_dict['code'][i], control_dict['control'][i], control_dict['onoff'][i], control_dict['value'][i], control_dict['value2'][i], control_dict['startTime'][i], control_dict['endTime'][i])
+        controlVo_list.append(obj)
+
+    return render_template('iotControl.html', rows=controlVo_list)
+
+@app.route("/ajax", methods=['POST'])
+def ajax() :
+    data = request.get_json()
+    print(data)
+    return jsonify(result = "success", result2 = data)
+
 @app.route("/dust_page",  methods=['POST', 'GET'])
 def dust_page() :
     _ip = getIp()
@@ -243,6 +266,8 @@ def insertGas() :
 
     db.insertGas(c_time, c_gas)
     return ""
+
+
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"

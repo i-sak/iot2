@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iotControl</title>
+
+    <link href="{{  url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+    <link href="{{  url_for('static', filename='css/control.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h3>iotControl</h3>
+    </header>
+
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <!--<th>code</th>-->
+                    <th>name</th>
+                    <th>전원</th>
+                    <th>cur</th>
+                    <th>des</th>
+                    <th>s_Time</th>
+                    <th>e_Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr style="border: black solid 2px;">
+                    <td style="display: none;">{{row.code}}</td>
+                    <td>{{row.control}}</td>
+                    <td id="onoff">{{row.onoff}}</td>
+                    <td>{% if row.onoff == "N" %}    {% else %} {{row.value}} {%endif%} </td>
+                    <td>{% if row.onoff == "N" %}    {% else %} {{row.value2}} {%endif%} </td>
+                    <td>{{startTime}}</td>
+                    <td>{{endTime}}</td>
+                    <tr>
+                        <td colspan="2"><button class="onoffButton"id="{{row.code}}">ON/OFF</button></td>
+                        <td colspan="4"><img id="onoff" class="controlImage" src="{{url_for('static', filename=row.control  ) }}.jpg "></td>
+                    </tr>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <p id="example">AJAX</p>
+        <input type="text" id="id1" placeholder="id">
+        <input type="text" id="password1" placeholder="password">
+        <input type="text" id="email1" placeholder="email">
+        <input type="button" id="execute" value="execute">
+    </section>
+
+    <script>
+        $('.onoffButton').click(function() {
+            /* 각자의 ID를 구분한다.
+            if (this.id == "001") alert("에어콘 ON/OFF");
+            if (this.id == "002") alert("제습기 ON/OFF");
+            if (this.id == "003") alert("조명 ON/OFF");
+            if (this.id == "004") alert("도어락 ON/OFF"); */
+
+        });
+
+        $('#execute').click(function(){
+            var id = $('#id1').val();
+            var password = $('#password1').val();
+            var email = $('#email1').val();
+
+            var postdata = {
+                'id':id, 'password':password, 'email':email
+            }
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("ajax")}}',
+                data: JSON.stringify(postdata),
+                dataType : 'JSON',
+                contentType: "application/json",
+                success: function(data){
+
+                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
+
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+                }
+            })
+        })
+    </script>
+
+    <a href="/menuHome" class="menuHomeButton">Home</a>
+</body>
+</html>

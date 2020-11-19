@@ -1,0 +1,11 @@
+td.off {
+    background-color: lightgray;
+}
+td.on {
+    background-color: lightgreen;
+}
+
+img.controlImage{
+    width: 100px;
+    height: 120px;
+}

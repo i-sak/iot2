@@ -62,5 +62,13 @@ class dbConnection:
         result = self.curs.fetchall()
         result = pd.DataFrame(result)
         return result
-        
+    
+    #control 불러오기
+    def selectControl(self) :
+        sql = "SELECT * FROM `control`;"
+        self.curs.execute(sql)
+        result = self.curs.fetchall()
+        result = pd.DataFrame(result)
+        return result
+
 
