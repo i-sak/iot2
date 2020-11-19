@@ -63,14 +63,39 @@
             if (this.id == "003") alert("조명 ON/OFF");
             if (this.id == "004") alert("도어락 ON/OFF"); */
             
-            var id;
-            var onoff;
-            // 에어콘 버튼을 누른다
-            if (this.id == "001") {
-                id = "001";
-                onoff = $('#onoff').text();
-                alert("id : " + id + ", onoff : " + onoff);
+            var id = this.id;   // 코드
+            var onoff = $('#onoff').text(); // onoff 상태
+
+            // JSON
+            var postData = {
+                'id' : id, 'onoff' : onoff
             }
+            
+            $.ajax({
+                type : 'POST',
+                url : '{{url_for("ajax")}}',
+                data: JSON.stringify(postData),
+                dataType : 'JSON',
+                contentType: "application/json",
+                success: function(data){
+                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['onoff'])
+                },
+                error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+                }
+            })
+            // 에어콘 버튼을 누른다
+            if (id == "001") {  // 에어컨 버튼
+                
+            } else if (id == "002") { // 제습기 버튼
+            
+            } else if (id == "003") { // 조명 버튼
+
+            } else if (id == "004") { // 도어락 ON/OFF
+
+            }
+
         });
 
         $('#execute').click(function(){
