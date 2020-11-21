@@ -329,9 +329,15 @@ def insertGas() :
 @app.route("/webhook", methods=['POST'])
 def webhook() :
     req = request.get_json(force=True)
+    print(" ")
+    print(" ")
     print(req)
+    print(" ")
+    print(" ")
 
-    #print(parameters)
+    parameters = req['queryResult']['parameters']
+    print(parameters)
+    
     return "test"
 
 #--------------------------------------------------------------------
