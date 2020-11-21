@@ -124,8 +124,8 @@
     <script>
 
         // iframe객체의 document
-        console.log(('iframe').contents().find('td#result').html());
-        
+        console.log($('iframe').contents().find('td#result').html());
+
         $('iframe').contents().find('td#result').change(function() {
             alert(123);
         });
