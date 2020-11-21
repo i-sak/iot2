@@ -362,7 +362,7 @@ def webhook() :
             db.updateControlOnOff('001', 'N')
     
     # database에서 값 꺼내기 : 해당하는 것 하나만
-    dataFrame = db.selectControlOne(_id)
+    dataFrame = db.selectControlOne('001')
 
     # converting to dict
     control_dict = dataFrame.to_dict()
