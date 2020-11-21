@@ -122,9 +122,11 @@
         </iframe>
     </div>
     <script>
+
         // iframe객체의 document
-        $('iframe').contents().find('#result').change(function() {
-            alert('asd');
+        
+        $('iframe').contents().find('td#result').change(function() {
+            alert(123);
         });
 
     </script>
