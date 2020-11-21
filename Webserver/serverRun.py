@@ -329,15 +329,17 @@ def insertGas() :
 @app.route("/webhook", methods=['POST'])
 def webhook() :
     req = request.get_json(force=True)
-    print(" ")
-    print(" ")
-    print(req)
-    print(" ")
-    print(" ")
-
+    #print(req)
     parameters = req['queryResult']['parameters']
-    print(parameters)
-    
+    #print(parameters)
+
+    if ( parameters.has_key('Device') ) :
+        print(parameters['Device'])
+    if ( parameters.has_key('Power') ) :
+        print(parameters['Power'])
+    if ( parameters.has_key('Sensor_Name') ) :
+        print(parameters['Sensor_Name'])
+
     return "test"
 
 #--------------------------------------------------------------------
