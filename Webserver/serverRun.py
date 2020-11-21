@@ -332,9 +332,14 @@ def webhook() :
     #print(req)
     parameters = req['queryResult']['parameters']
     #print(parameters)
-    print(type(parameters))
 
-    return "test"
+    if "Device" in parameters :
+        print(parameters['Device'])
+    if "Power" in parameters :
+        print(parameters['Power'])
+    if "Sensor_Name" in parameters :
+        print(parameters['Sensor_Name'])
+
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
