@@ -99,7 +99,20 @@
                 $(this).parent().next().removeClass("on");
             }
         });
-
+        $.ajax({
+            type : 'POST',
+            url : '{{url_for("webhook")}}',
+            //data: JSON.stringify(postData),
+            dataType : 'JSON',
+            contentType: "application/json",
+            success: function(data){
+                alert("asd");
+            }, 
+            error: function(request, status, error){
+                    alert('ajax 통신 실패')
+                    alert(error);
+            }
+        })
         // 초기화 함수
         function init() {
             // 도어락 
