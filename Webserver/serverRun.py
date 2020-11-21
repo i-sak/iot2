@@ -332,13 +332,7 @@ def webhook() :
     #print(req)
     parameters = req['queryResult']['parameters']
     #print(parameters)
-
-    if ( parameters.has_key('Device') ) :
-        print(parameters['Device'])
-    if ( parameters.has_key('Power') ) :
-        print(parameters['Power'])
-    if ( parameters.has_key('Sensor_Name') ) :
-        print(parameters['Sensor_Name'])
+    print(type(parameters))
 
     return "test"
 
