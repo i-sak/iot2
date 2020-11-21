@@ -89,31 +89,15 @@
                     alert(error);
                 }
             })
-
-            
             
             if($(this).parent().parent().parent().find("#onoff"+id).html() == "N") // 꺼져있던 값이면
-            {   // 이제 켜지니까 on
+            {   // 이제 켜지니까 on 추가
                 $(this).parent().next().addClass("on");
-            } else {
+            } else {    // 꺼지니까 on 제거
                 $(this).parent().next().removeClass("on");
             }
         });
 
-        $.ajax({
-            type : 'POST',
-            url : '{{url_for("webhook")}}',
-            //data: JSON.stringify(postData),
-            dataType : 'JSON',
-            contentType: "application/json",
-            success: function(data){
-                alert("asd");
-            }, 
-            error: function(request, status, error){
-                    alert('webhook ajax 통신 실패')
-                    alert(error);
-            }
-        })
         // 초기화 함수
         function init() {
             // 도어락 
@@ -126,6 +110,14 @@
                 }
             }
         }
+
+        // 네트워크 데이터 가져오기
+        fetch("/webhook").then(function(response) {
+            return response.json();
+        }).then(function(myJson) {
+            console.log(JSON.stringify(myJson));
+        });
+
     </script>
     
     <div id="chatbot">
