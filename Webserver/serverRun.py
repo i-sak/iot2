@@ -35,12 +35,13 @@ asyncio.get_event_loop().run_forever()
 cctvVo_list = [] # 임시 cctv 리스트
 tempVo_list = []  # 온습도 리스트
 gasVo_list = [] #  가스 리스트
-
 controlVo_list = [] # control 리스트
-
+#-----------------------------------------------------------------
+# db 연결 
 def dbConnect():
     return dbConnection.dbConnection(host='192.168.219.108', id='latte', pw='lattepanda', db_name='test')
 
+# ip주소 얻기
 def getIp() :
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
@@ -324,7 +325,11 @@ def insertGas() :
     db.insertGas(c_time, c_gas)
     return ""
 
-
+#-------------------------------------------------------------------
+@app.route("/webhook", methods=['POST'])
+def webhook() :
+    print("webhook 실행")
+    return ""
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
