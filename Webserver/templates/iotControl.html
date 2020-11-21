@@ -111,10 +111,6 @@
             }
         }
 
-        // 감지하는지 체크
-        $('iframe').contents().find("#result").change(function() {
-            alert("123");
-        });
     </script>
     
     <div id="chatbot">
@@ -125,6 +121,14 @@
             src="https://console.dialogflow.com/api-client/demo/embedded/8d62168a-49ed-4591-9a1a-366e9ba6825b">
         </iframe>
     </div>
+    <script>
+        // iframe객체의 document
+        $('iframe').get(0).contentDocument.find('#result').change(function() {
+            alert('asd');
+        });
+
+    </script>
+
     <div style="height: 100px; text-align: center; vertical-align: middle;">
         <a href="/menuHome" >Home</a>
     </div>
