@@ -123,7 +123,7 @@
     </div>
     <script>
         // iframe객체의 document
-        $('iframe').get(0).contentDocument.find('#result').change(function() {
+        $('iframe').contents().find('#result').change(function() {
             alert('asd');
         });
 
