@@ -1,5 +1,5 @@
 from vo import cctvVo, tempVo, gasVo, controlVo
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from mariadb import dbConnection
 from emailService import sendEmail
 import os
@@ -332,14 +332,30 @@ def webhook() :
     #print(req)
     parameters = req['queryResult']['parameters']
     #print(parameters)
+    Device_is = -1
+    Power_is = -1
+    Sensor_Name_is = -1
 
     if "Device" in parameters :
         print(parameters['Device'])
+        Device = parameters['Device']
+        Device_is = 1
     if "Power" in parameters :
         print(parameters['Power'])
+        Power = parameters['Power']
+        Power_is = 1
     if "Sensor_Name" in parameters :
         print(parameters['Sensor_Name'])
-
+        Sensor_Name = parameters['Sensor_Name']
+        Sensor_Name_is =1
+    
+    if Device_is == 1 and Power_is == 1 :   # 제품을 켜다, 끄다
+        if Device == "에어컨" and Power == "켜다" :
+            print(Device, Power)
+        elif Device == "에어컨" and Power == "끄다" :
+            print(Device, Power)
+            
+    return redirect(url_for('iotControl'))
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
