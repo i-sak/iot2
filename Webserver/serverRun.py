@@ -356,7 +356,8 @@ def webhook() :
         elif Device == "에어컨" and Power == "끄다" :
             print(Device, Power)
 
-    return {  "fulfillmentMessages": [    {      "text": {        "text": [          "Text response from webhook"        ]      }    }  ]}
+    return "123"
+    #return {  "fulfillmentMessages": [    {      "text": {        "text": [          "Text response from webhook"        ]      }    }  ]}
     #return jsonify(hello='world') # returns HTTP responese with
 
 #--------------------------------------------------------------------
