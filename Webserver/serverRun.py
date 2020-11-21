@@ -328,6 +328,9 @@ def insertGas() :
 #-------------------------------------------------------------------
 @app.route("/webhook", methods=['POST'])
 def webhook() :
+    # db연결
+    db = dbConnect()
+
     req = request.get_json(force=True)
     #print(req)
     parameters = req['queryResult']['parameters']
@@ -352,11 +355,20 @@ def webhook() :
     if Device_is == 1 and Power_is == 1 :   # 제품을 켜다, 끄다
         if Device == "에어컨" and Power == "켜다" :
             print(Device, Power)
+            db.updateControlOnOff('001', 'Y')
 
         elif Device == "에어컨" and Power == "끄다" :
             print(Device, Power)
+            db.updateControlOnOff('001', 'N')
     
-    return ""
+    # database에서 값 꺼내기 : 해당하는 것 하나만
+    dataFrame = db.selectControlOne(_id)
+
+    # converting to dict
+    control_dict = dataFrame.to_dict()
+
+    return jsonify(result = "success", result2=control_dict)
+
     #return {  "fulfillmentMessages": [    {      "text": {        "text": [          "Text response from webhook"        ]      }    }  ]}
     #return jsonify(hello='world') # returns HTTP responese with
     # {'fulfillmentText' : 'HELLO'}
