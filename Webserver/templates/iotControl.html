@@ -109,12 +109,20 @@
                     $("tr#00"+i).next().children(".onoff").addClass("on");
                 }
             }
+
+            // iframe객체의 document
+            /*
+            idoc = $('iframe').get(0).contentDocument
+            console.log( idoc );
+            console.log($('iframe').contents().find("#result"));
+            */
         }
 
     </script>
     
     <div id="chatbot">
         <iframe
+            id="iframe"
             allow="microphone;"
             width="350"
             height="430"
@@ -124,12 +132,13 @@
     <script>
 
         // iframe객체의 document
-        console.log($('iframe').contents().find('td#result'));
-
-        $('iframe').contents().find('td#result').change(function() {
+        /*
+        idoc = $('iframe').get(0).contentDocument
+        console.log( idoc );
+        $('#iframe').contents().find('td#result').change(function() {
             alert(123);
         });
-
+        */
     </script>
 
     <div style="height: 100px; text-align: center; vertical-align: middle;">
