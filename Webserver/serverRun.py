@@ -330,6 +330,7 @@ def insertGas() :
 def webhook() :
     req = request.get_json(force=True)
     print(req)
+    return "test"
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
