@@ -4,7 +4,7 @@ from mariadb import dbConnection
 from emailService import sendEmail
 import os
 import datetime
-
+import json
 import asyncio
 import websockets   # pip install websockets
 import cv2, base64  # python
@@ -38,6 +38,9 @@ gasVo_list = [] #  가스 리스트
 
 controlVo_list = [] # control 리스트
 
+def dbConnect():
+    return dbConnection.dbConnection(host='192.168.219.108', id='latte', pw='lattepanda', db_name='test')
+
 def getIp() :
     return request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
 
@@ -54,6 +57,9 @@ def signup():
 # 회원가입 insert
 @app.route("/signupInsert", methods=['POST'])
 def signupInsert():
+    # db연결
+    db = dbConnect()
+
     _id = request.values["_id"]
     # _name = request.form.get('_name')
     _name = request.values["_name"]
@@ -61,7 +67,7 @@ def signupInsert():
 
     print(_id, _name, _password)
     # 회원가입
-    #db = dbConnection.dbConnection(host='192.168.219.111', id='latte', pw='lattepanda', db_name='test')
+    
     db.insertMember( _id, _name, _password )
     return render_template('index.html')
 
@@ -99,6 +105,8 @@ def menuHome() :
 # cctv_list page
 @app.route("/cctv_list",  methods=['POST', 'GET'])
 def cctv_list() :
+    # db연결
+    db = dbConnect()
 
     # database에서 값 꺼내기
     dataFrame = db.selectCctv()
@@ -120,6 +128,8 @@ def cctv_list() :
 
 @app.route("/temp_list",  methods=['POST', 'GET'])
 def temp_list() :
+    # db연결
+    db = dbConnect()
 
     # database에서 값 꺼내기
     dataFrame = db.selectTemp()
@@ -136,6 +146,8 @@ def temp_list() :
 
 @app.route("/gas_list",  methods=['POST', 'GET'])
 def gas_list() :
+    # db연결
+    db = dbConnect()
     
     # database에서 값 꺼내기
     dataFrame = db.selectGas()
@@ -150,8 +162,12 @@ def gas_list() :
         
     return render_template('gas_list.html', rows=gasVo_list)
 
+# iotControl 통신하기
 @app.route("/iotControl", methods=['POST','GET'])
 def iotControl() :
+    # db연결
+    db = dbConnect()
+
     # database에서 값 꺼내기
     dataFrame = db.selectControl()
     # converting to dict
@@ -165,11 +181,39 @@ def iotControl() :
 
     return render_template('iotControl.html', rows=controlVo_list)
 
+# ajax 비동기 통신으로 전원 ON/OFF 하기
 @app.route("/ajax", methods=['POST'])
 def ajax() :
+    # db연결
+    db = dbConnect()
+
+    # 데이터 수신
     data = request.get_json()
+    # 데이터 출력
     print(data)
-    return jsonify(result = "success", result2 = data)
+    # value 파싱
+    _id = data['id']
+    _onoff = data['onoff']
+
+    # 전원 변경
+    if (_onoff == 'Y' ) :
+        _onoff = "N"
+    else :
+        _onoff = "Y"
+    
+    # 실제 변경 업데이트
+    print(_id, _onoff)
+    db.updateControlOnOff(_id, _onoff)
+    
+    # database에서 값 꺼내기 : 해당하는 것 하나만
+    dataFrame = db.selectControlOne(_id)
+
+    # converting to dict
+    control_dict = dataFrame.to_dict()
+
+    # 데이터 출력 및 확인
+    print(control_dict)
+    return jsonify(result = "success", result2= control_dict)
 
 @app.route("/dust_page",  methods=['POST', 'GET'])
 def dust_page() :
@@ -180,6 +224,9 @@ def dust_page() :
 # From CCTV client / insert
 @app.route("/insertCctv", methods=['POST', 'GET'])
 def insertCctv() :
+    # db연결
+    db = dbConnect()
+
     #now = datetime.datetime.now()
     #nowDatetime =  now.strftime('%Y-%m-%d %H:%M:%S'.encode('unicode-escape').decode())
     c_time = request.values['time'] # 측정 시간
@@ -202,6 +249,9 @@ def insertCctv() :
 # From Temperature/Humidity 온습도 클라이언트로부터의 값 얻어서 넣기
 @app.route("/insertTemp", methods=['POST', 'GET'])
 def insertTemp() :
+    # db연결
+    db = dbConnect()
+
     now = datetime.datetime.now()
     nowDatetime =  now.strftime('%Y-%m-%d %H:%M:%S'.encode('unicode-escape').decode())
     
@@ -232,6 +282,9 @@ def insertTemp() :
 
 @app.route("/insertGas", methods=['POST','GET'])
 def insertGas() :
+    # db연결
+    db = dbConnect()
+
     now = datetime.datetime.now()
     nowDatetime =  now.strftime('%Y-%m-%d %H:%M:%S'.encode('unicode-escape').decode())
     

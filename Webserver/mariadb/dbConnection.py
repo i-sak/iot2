@@ -71,4 +71,19 @@ class dbConnection:
         result = pd.DataFrame(result)
         return result
 
+    # control 하나 불러오기
+    def selectControlOne(self, code) :
+        sql = """SELECT * FROM `control` WHERE code ="%s"; """%(code)
+        self.curs.execute(sql)
+        result = self.curs.fetchall()
+        result = pd.DataFrame(result)
+        return result
+
+    # 전원 on/off
+    def updateControlOnOff(self, code, onoff) :
+        sql = """UPDATE `control` SET onoff = "%s", startTime = NOW() WHERE code = "%s" ;"""%( onoff, code)
+        self.curs.execute(sql)
+        self.conn.commit()
+
+    
 

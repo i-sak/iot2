@@ -9,7 +9,7 @@
     <link href="{{  url_for('static', filename='css/control.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
-<body>
+<body onload="init()">
 
     <header>
         <h3>iotControl</h3>
@@ -22,51 +22,37 @@
                     <!--<th>code</th>-->
                     <th>name</th>
                     <th>전원</th>
-                    <th>cur</th>
-                    <th>des</th>
+                    <th> cur </th>
+                    <th> des </th>
                     <th>s_Time</th>
-                    <th>e_Time</th>
+                    <!--<th>e_Time</th>-->
                 </tr>
             </thead>
             <tbody>
                 {% for row in rows %}
-                <tr style="border: black solid 2px;">
+                <tr id="{{row.code}}" style="border: black solid 2px;">
                     <td style="display: none;">{{row.code}}</td>
                     <td>{{row.control}}</td>
-                    <td id="onoff">{{row.onoff}}</td>
-                    <td>{% if row.onoff == "N" %}    {% else %} {{row.value}} {%endif%} </td>
-                    <td>{% if row.onoff == "N" %}    {% else %} {{row.value2}} {%endif%} </td>
-                    <td>{{startTime}}</td>
-                    <td>{{endTime}}</td>
-                    <tr>
+                    <td id="onoff{{row.code}}" class="onoff">{{row.onoff}}</td>
+                    <td class="value1">{% if row.onoff == "N" %}    {% else %} {{row.value}} {%endif%} </td>
+                    <td class="value2">{% if row.onoff == "N" %}    {% else %} {{row.value2}} {%endif%} </td>
+                    <td class="startTime">{% if row.onoff == "N" %} {% else %} {{row.startTime}} {%endif%}</td>
+                    <!--<td>{{endTime}}</td>-->
+                    <tr class="onoffRow">
                         <td colspan="2"><button class="onoffButton"id="{{row.code}}">ON/OFF</button></td>
-                        <td colspan="4"><img id="onoff_img" class="controlImage" src="{{url_for('static', filename=row.control  ) }}.jpg "></td>
+                        <td colspan="3" class="onoff"><img class="controlImage" src="{{url_for('static', filename=row.control  ) }}.jpg "></td>
                     </tr>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <!--
-        <p id="example">AJAX</p>
-        <input type="text" id="id1" placeholder="id">
-        <input type="text" id="password1" placeholder="password">
-        <input type="text" id="email1" placeholder="email">
-        <input type="button" id="execute" value="execute">
-        -->
     </section>
 
     <script>
         $('.onoffButton').click(function() {
-            /* 각자의 ID를 구분한다.
-            if (this.id == "001") alert("에어콘 ON/OFF");
-            if (this.id == "002") alert("제습기 ON/OFF");
-            if (this.id == "003") alert("조명 ON/OFF");
-            if (this.id == "004") alert("도어락 ON/OFF"); */
-            
             var id = this.id;   // 코드
-            var onoff = $('#onoff').text(); // onoff 상태
-
+            var onoff = $('tr#'+id+' > td#onoff'+id).text();              
+            
             // JSON
             var postData = {
                 'id' : id, 'onoff' : onoff
@@ -79,26 +65,60 @@
                 dataType : 'JSON',
                 contentType: "application/json",
                 success: function(data){
-                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['onoff'])
+                    // 화면 updqte
+                    $("tr#"+data.result2['code'][0]+" > td.onoff").html(data.result2['onoff'][0])
+                    if (data.result2['onoff'][0] == "Y") {  // 전원 on
+                        if(data.result2['code'][0] != "004") {
+                            $("tr#"+data.result2['code'][0]+" > td.value1").text(data.result2['value'][0]); // cur
+                            $("tr#"+data.result2['code'][0]+" > td.value2").text(data.result2['value2'][0]);    // des
+                        }
+                        $("tr#"+data.result2['code'][0]+" > td.startTime").text(data.result2['startTime'][0]);  // startTime
+                        $("tr#"+data.result2['code'][0]+" > .onoff").addClass("on");  // 전원
+                        
+                    } else if (data.result2['onoff'][0] == "N") {   // 전원 off
+                        $("tr#"+data.result2['code'][0]+" > td.value1").text("");   // cur
+                        $("tr#"+data.result2['code'][0]+" > td.value2").text("");   // des
+
+                        $("tr#"+data.result2['code'][0]+" > td.startTime").text("");   // startTime
+                        $("tr#"+data.result2['code'][0]+" > .onoff").removeClass("on");   // 전원
+                    }
+
+                    //data.result2['code'][0]
+                    //data.result2['control'][0]
+                    //data.result2['value'][0]
+                    //data.result2['value2'][0]
+                    //data.result2['startTime'][0]
+                    //data.result2['endTime'][0]
+                    
                 },
                 error: function(request, status, error){
                     alert('ajax 통신 실패')
                     alert(error);
                 }
             })
-            // 에어콘 버튼을 누른다
-            if (id == "001") {  // 에어컨 버튼
-                
-            } else if (id == "002") { // 제습기 버튼
+
             
-            } else if (id == "003") { // 조명 버튼
-
-            } else if (id == "004") { // 도어락 ON/OFF
-
+            
+            if($(this).parent().parent().parent().find("#onoff"+id).html() == "N") // 꺼져있던 값이면
+            {   // 이제 켜지니까 on
+                $(this).parent().next().addClass("on");
+            } else {
+                $(this).parent().next().removeClass("on");
             }
-
         });
 
+        // 초기화 함수
+        function init() {
+            // 도어락 
+            $("tr#004 .value1").text("");
+            $("tr#004 .value2").text("");
+            for(i = 1; i <= 4; i++) {
+                if ($("tr#00"+i).children(".onoff").text() == "Y") {
+                    $("tr#00"+i).children(".onoff").addClass("on");
+                    $("tr#00"+i).next().children(".onoff").addClass("on");
+                }
+            }
+        }
 /*
         $('#execute').click(function(){
             var id = $('#id1').val();

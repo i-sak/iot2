@@ -1,8 +1,7 @@
-td.off {
-    background-color: lightgray;
-}
-td.on {
+.on {
     background-color: lightgreen;
+    transition-property: background-color; 
+    transition-duration: 0.5s ;
 }
 
 img.controlImage{
