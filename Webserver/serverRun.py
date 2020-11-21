@@ -329,7 +329,7 @@ def insertGas() :
 @app.route("/webhook", methods=['POST'])
 def webhook() :
     req = request.get_json(force=True)
-    print(webhook)
+    print(req)
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
