@@ -356,9 +356,10 @@ def webhook() :
         elif Device == "에어컨" and Power == "끄다" :
             print(Device, Power)
     
-    return {'fulfillmentText' : 'HELLO'}
+    return ""
     #return {  "fulfillmentMessages": [    {      "text": {        "text": [          "Text response from webhook"        ]      }    }  ]}
     #return jsonify(hello='world') # returns HTTP responese with
+    # {'fulfillmentText' : 'HELLO'}
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
