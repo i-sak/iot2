@@ -110,6 +110,11 @@
                 }
             }
         }
+
+        // 감지하는지 체크
+        $('iframe').contents().find("#result").change(function() {
+            alert("123");
+        });
     </script>
     
     <div id="chatbot">
