@@ -99,6 +99,7 @@
                 $(this).parent().next().removeClass("on");
             }
         });
+
         $.ajax({
             type : 'POST',
             url : '{{url_for("webhook")}}',
@@ -109,7 +110,7 @@
                 alert("asd");
             }, 
             error: function(request, status, error){
-                    alert('ajax 통신 실패')
+                    alert('webhook ajax 통신 실패')
                     alert(error);
             }
         })
