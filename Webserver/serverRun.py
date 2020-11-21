@@ -49,10 +49,12 @@ def getIp() :
 # main page
 @app.route("/")
 def index() :
+    # db연결
 	return render_template('index.html')
 # 회원가입 Sign-Up
 @app.route("/signup")
 def signup():
+    # db연결
     return render_template('signup.html')
 # 회원가입 insert
 @app.route("/signupInsert", methods=['POST'])
@@ -67,7 +69,6 @@ def signupInsert():
 
     print(_id, _name, _password)
     # 회원가입
-    
     db.insertMember( _id, _name, _password )
     return render_template('index.html')
 
@@ -75,6 +76,9 @@ def signupInsert():
 # signin [log-in]
 @app.route("/signin", methods=['POST'])
 def siginin() :
+    # db연결
+    db = dbConnect()
+
     if request.method == 'POST' :
          # post 로 보내면 request.form.get으로 받고,
          # get으로 보내는 경우 requst.args.get으로 받음

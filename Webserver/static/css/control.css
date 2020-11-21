@@ -8,3 +8,14 @@ img.controlImage{
     width: 100px;
     height: 120px;
 }
+div#chatbot
+{
+    
+    text-align: center;
+    margin: 0 auto;
+}
+iframe {
+    border: 1px solid black;
+    display: inline-block;
+}
+

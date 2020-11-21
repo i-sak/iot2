@@ -82,13 +82,6 @@
                         $("tr#"+data.result2['code'][0]+" > td.startTime").text("");   // startTime
                         $("tr#"+data.result2['code'][0]+" > .onoff").removeClass("on");   // 전원
                     }
-
-                    //data.result2['code'][0]
-                    //data.result2['control'][0]
-                    //data.result2['value'][0]
-                    //data.result2['value2'][0]
-                    //data.result2['startTime'][0]
-                    //data.result2['endTime'][0]
                     
                 },
                 error: function(request, status, error){
@@ -119,35 +112,16 @@
                 }
             }
         }
-/*
-        $('#execute').click(function(){
-            var id = $('#id1').val();
-            var password = $('#password1').val();
-            var email = $('#email1').val();
-
-            var postdata = {
-                'id':id, 'password':password, 'email':email
-            }
-            $.ajax({
-                type: 'POST',
-                url: '{{url_for("ajax")}}',
-                data: JSON.stringify(postdata),
-                dataType : 'JSON',
-                contentType: "application/json",
-                success: function(data){
-
-                    alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
-
-                },
-                error: function(request, status, error){
-                    alert('ajax 통신 실패')
-                    alert(error);
-                }
-            })
-        })
-        */
     </script>
-
+    
+    <div id="chatbot">
+        <iframe
+            allow="microphone;"
+            width="350"
+            height="430"
+            src="https://console.dialogflow.com/api-client/demo/embedded/8d62168a-49ed-4591-9a1a-366e9ba6825b">
+        </iframe>
+    </div>
     <a href="/menuHome" class="menuHomeButton">Home</a>
 </body>
 </html>
