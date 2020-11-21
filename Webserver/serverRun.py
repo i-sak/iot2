@@ -352,10 +352,11 @@ def webhook() :
     if Device_is == 1 and Power_is == 1 :   # 제품을 켜다, 끄다
         if Device == "에어컨" and Power == "켜다" :
             print(Device, Power)
+
         elif Device == "에어컨" and Power == "끄다" :
             print(Device, Power)
-            
-    return redirect(url_for('iotControl'))
+
+    return jsonify(hello='world') # returns HTTP responese with
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
