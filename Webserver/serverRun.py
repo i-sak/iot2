@@ -405,8 +405,8 @@ def webhook() :
             #dictionary화
             c_dict = dataFrame.to_dict()
             c_time = c_dict['c_time']
-            c_image = c_dict['t_image']
-            return { 'fulfillmentText' : "최근 방문자가 다녀간 시간[%s] 입니다."%c_time }
+            #c_image = c_dict['t_image']
+            return { 'fulfillmentText' : "방문자가 다녀간 시간[%s] 입니다."%c_time }
 
     #return jsonify(result = "success", result2=control_dict)
     return ""
