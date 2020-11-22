@@ -383,8 +383,8 @@ def webhook() :
             dataFrame = db.selectTemHumTop1()
             #dictionary화
             t_dict = dataFrame.to_dict()
-            t_temp = t_dict['t_temp']
-            t_humi = t_dict['t_humi']
+            t_temp = t_dict['t_temp'][0]
+            t_humi = t_dict['t_humi'][0]
             if Sensor_Name == "온도" : 
                 return { 'fulfillmentText' : "현재 온도는 [%s] 입니다. "%t_temp }
             if Sensor_Name == "습도" : 
@@ -397,7 +397,7 @@ def webhook() :
             #dictionary화
             g_dict = dataFrame.to_dict()
             # g_time = g_dict['g_time']
-            g_gas = g_dict['g_gas']
+            g_gas = g_dict['g_gas'][0]
             return { 'fulfillmentText' : "현재 가스농도는 [%s] 입니다. "%g_gas }
         if Sensor_Name == "카메라" : 
             # database에서 값 꺼내기
@@ -406,7 +406,7 @@ def webhook() :
             c_dict = dataFrame.to_dict()
             c_time = c_dict['c_time']
             c_image = c_dict['t_image']
-            return { 'fulfillmentText' : "최근 방문자가 다녀간 시간 [%s] 입니다. "%c_time }
+            return { 'fulfillmentText' : "최근 방문자가 다녀간 시간[%s] 입니다."%c_time }
 
     #return jsonify(result = "success", result2=control_dict)
     return ""
