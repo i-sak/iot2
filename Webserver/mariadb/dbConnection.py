@@ -85,5 +85,28 @@ class dbConnection:
         self.curs.execute(sql)
         self.conn.commit()
 
-    
+    # 온도/습도 제일 최근 것 GET    
+    def selectTemHumTop1(self) :
+        sql = "SELECT * FROM `temperature` ORDER BY t_time DESC LIMIT 1"
+        self.curs.execute(sql)
+        result = self.curs.fetchall()
+        result = pd.DataFrame(result)
+        return result
 
+    # 가스 제일 최근 것 GET    
+    def selectGasTop1(self) :
+        sql = "SELECT * FROM `gas` ORDER BY g_time DESC LIMIT 1"
+        self.curs.execute(sql)
+        result = self.curs.fetchall()
+        result = pd.DataFrame(result)
+        return result
+    
+    # 카메라 제일 최근 것 GET    
+    def selectCameraTop1(self) :
+        sql = "SELECT * FROM `camera` ORDER BY c_time DESC LIMIT 1"
+        self.curs.execute(sql)
+        result = self.curs.fetchall()
+        result = pd.DataFrame(result)
+        return result
+
+    

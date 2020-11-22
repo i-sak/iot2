@@ -14,6 +14,7 @@ import numpy as np
 
 app = Flask(__name__)	# Flask object Assign to app
 #192.168.219.108
+#122.
 db = dbConnection.dbConnection(host='192.168.219.108', id='latte', pw='lattepanda', db_name='test')
 
 slist = "isaac7263@naver.com, juhea0619@naver.com, itit2014@naver.com, rabbit3919@naver.com"
@@ -352,8 +353,8 @@ def webhook() :
         Sensor_Name = parameters['Sensor_Name']
         Sensor_Name_is =1
     
-    print(Device, Power)
-    if Device_is == 1 and Power_is == 1 :   # 제품을 켜다, 끄다
+    # 제품을 켜고 끄다.
+    if Device_is == 1 and Power_is == 1 :   # 파라미터에 재품과 파워가 존재한다.
         if Device == "에어컨" and Power == "켜다" :
             db.updateControlOnOff('001', 'Y')
         elif Device == "에어컨" and Power == "끄다" :
@@ -370,12 +371,42 @@ def webhook() :
             db.updateControlOnOff('004', 'Y')
         elif Device == "도어락" and Power == "끄다" :
             db.updateControlOnOff('004', 'N')
-
-    # database에서 값 꺼내기 : 해당하는 것 하나만
-    #dataFrame = db.selectControlOne('001')
-
-    # converting to dict
-    #control_dict = dataFrame.to_dict()
+        print(Device, Power)
+    
+    # 센서에 대한 문의가 있었다.
+    # 미세 먼지 / 온도 / 습도 / 가스 / 날씨 / 카메라
+    if  Sensor_Name_is == 1 :
+        if Sensor_Name == "미세 먼지" or Sensor_Name == "미세먼지" :
+            pass
+        if Sensor_Name == "온도" or Sensor_Name == "습도" or Sensor_Name == "날씨" :
+            # database에서 값 꺼내기
+            dataFrame = db.selectTemHumTop1()
+            #dictionary화
+            t_dict = dataFrame.to_dict()
+            t_temp = t_dict['t_temp']
+            t_humi = t_dict['t_humi']
+            if Sensor_Name == "온도" : 
+                return { 'fulfillmentText' : "현재 온도는 [%s] 입니다. "%t_temp }
+            if Sensor_Name == "습도" : 
+                return { 'fulfillmentText' : "현재 습도는 [%s] 입니다. "%t_humi }
+            if Sensor_Name == "날씨" : 
+                return { 'fulfillmentText' : "현재 기온은 [%s], 습도는 [%s] 입니다. "%(t_temp, t_humi) }
+        if Sensor_Name == "가스" :
+            # database에서 값 꺼내기
+            dataFrame = db.selectGasTop1()
+            #dictionary화
+            g_dict = dataFrame.to_dict()
+            # g_time = g_dict['g_time']
+            g_gas = g_dict['g_gas']
+            return { 'fulfillmentText' : "현재 가스농도는 [%s] 입니다. "%g_gas }
+        if Sensor_Name == "카메라" : 
+            # database에서 값 꺼내기
+            dataFrame = db.selectCameraTop1()
+            #dictionary화
+            c_dict = dataFrame.to_dict()
+            c_time = c_dict['c_time']
+            c_image = c_dict['t_image']
+            return { 'fulfillmentText' : "최근 방문자가 다녀간 시간 [%s] 입니다. "%c_time }
 
     #return jsonify(result = "success", result2=control_dict)
     return ""
