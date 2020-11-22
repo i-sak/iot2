@@ -404,8 +404,8 @@ def webhook() :
             dataFrame = db.selectCameraTop1()
             #dictionary화
             c_dict = dataFrame.to_dict()
-            c_time = c_dict['c_time']
-            #c_image = c_dict['t_image']
+            c_time = c_dict['c_time'][0]
+            c_image = c_dict['c_image']
             return { 'fulfillmentText' : "방문자가 다녀간 시간[%s] 입니다."%c_time }
 
     #return jsonify(result = "success", result2=control_dict)
