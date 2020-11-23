@@ -2,7 +2,7 @@ import socket
 
 
 # 서버의 주소입니다. hostname 또는 ip address를 사용할 수 있습니다.
-HOST = '127.0.0.1'  
+HOST = '192.168.219.100'  
 # 서버에서 지정해 놓은 포트 번호입니다. 
 PORT = 11011       
 
