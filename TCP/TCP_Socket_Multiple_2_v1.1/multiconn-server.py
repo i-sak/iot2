@@ -9,8 +9,6 @@ def threaded(client_socket, addr):
 
     print('Connected by :', addr[0], ':', addr[1]) 
 
-
-
     # 클라이언트가 접속을 끊을 때 까지 반복합니다. 
     while True: 
 
@@ -35,7 +33,11 @@ def threaded(client_socket, addr):
     client_socket.close() 
 
 
-HOST = '192.168.0.4'
+#HOST = '192.168.0.4'
+#HOST = '192.168.219.100' 이삭 데스크탑 내부
+HOSTs = socket.gethostbyname_ex(socket.gethostname())
+print("HOST ADDR : ",HOSTs[2][0])
+HOST = HOSTs[2][0]
 PORT = 9999
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
@@ -52,7 +54,6 @@ print('server start')
 while True: 
 
     print('wait')
-
 
     client_socket, addr = server_socket.accept() 
     start_new_thread(threaded, (client_socket, addr)) 

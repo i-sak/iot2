@@ -9,7 +9,7 @@ import asyncio
 import websockets   # pip install websockets
 import cv2, base64  # python
 import numpy as np
-
+import socket
 
 
 app = Flask(__name__)	# Flask object Assign to app
@@ -326,6 +326,15 @@ def insertGas() :
     db.insertGas(c_time, c_gas)
     return ""
 
+@app.route("/test", methods=['POST', 'GET'])
+def test() :
+    #HOST = '192.168.219.100'
+    #PORT = 8282
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto("컴파일럿 기기 제어".encode(), ("192.168.219.100", 8282))
+    sock.close()
+    return ""
+
 #-------------------------------------------------------------------
 @app.route("/webhook", methods=['POST'])
 def webhook() :
@@ -408,11 +417,7 @@ def webhook() :
             c_image = c_dict['c_image']
             return { 'fulfillmentText' : "방문자가 다녀간 시간[%s] 입니다."%c_time }
 
-    #return jsonify(result = "success", result2=control_dict)
     return ""
-    #return {  "fulfillmentMessages": [    {      "text": {        "text": [          "Text response from webhook"        ]      }    }  ]}
-    #return jsonify(hello='world') # returns HTTP responese with
-    # {'fulfillmentText' : 'HELLO'}
 
 #--------------------------------------------------------------------
 host_addr = "0.0.0.0"
